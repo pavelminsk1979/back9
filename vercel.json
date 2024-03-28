@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "back9",
+  "name": "backEnd9",
   "builds": [
     {
       "src": "src/index.ts",
