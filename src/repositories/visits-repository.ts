@@ -11,7 +11,7 @@ export const visitsRepository = {
 
 
 
-    async findVisitsByIPAndURL (IP:string,URL:string): Promise<FindCursor  <Visit>>{
+    async findVisitsByIPAndURL (IP:string,URL:string): Promise<FindCursor <Visit>>{
         return await visitsCollection.find({IP,URL})
     },
 

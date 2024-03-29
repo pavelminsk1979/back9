@@ -8,10 +8,8 @@ export const visitLimitService = {
 
         const newVisit: Visit = {IP, URL, date}
 
-        const result = await visitsRepository.createVisit(newVisit)
+         await visitsRepository.createVisit(newVisit)
 
-        //const idNewRequest = result.insertedId.toString()
-        //if (!idNewRequest) return null
 
         const visits: FindCursor<Visit> = await visitsRepository.findVisitsByIPAndURL(IP, URL)
         //visits don't have method filter
