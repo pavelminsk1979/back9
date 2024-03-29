@@ -4,6 +4,7 @@ import {Blog} from "../allTypes/blogTypes";
 import {Post} from "../allTypes/postTypes";
 import {User} from "../allTypes/userTypes";
 import {Comment} from "../allTypes/commentTypes";
+import {Visit} from "../allTypes/visitTypes";
 
 export const port = 3000
 
@@ -28,6 +29,9 @@ export const blogsCollection=db.collection<Blog>('blogs')
 export const usersCollection=db.collection<User>('users')
 
 export const commentsCollection=db.collection<Comment>('comments')
+
+export const visitsCollection=db.collection<Visit>('visits')
+
 
 export async function runDb(){
     try {

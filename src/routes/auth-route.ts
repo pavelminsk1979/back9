@@ -16,6 +16,7 @@ import {codeConfirmationValidation} from "../middlewares/authMiddleware/codeConf
 import {isConfirmedFlagValidation} from "../middlewares/authMiddleware/isConfirmedFlagValidation";
 import {isExistLoginValidator} from "../middlewares/authMiddleware/isExistLoginValidator";
 import {isExistEmailValidation} from "../middlewares/authMiddleware/isExistEmailValidation";
+import {visitLimitMiddleware} from "../middlewares/commonMiddlewares/visitLimitMiddleware";
 
 
 export const authRoute = Router({})
@@ -25,7 +26,7 @@ const postValidationAuth = () => [loginAndEmailValidationAuth, passwordValidatio
 const postValidationForRegistration = () => [loginValidationUsers, passwordValidationUsers, emailValidationUsers,isExistLoginValidator,isExistEmailValidation]
 
 
-authRoute.post('/login', postValidationAuth(), errorValidationBlogs, async (req: RequestWithBody<AuthModel>, res: Response) => {
+authRoute.post('/login',visitLimitMiddleware, postValidationAuth(), errorValidationBlogs, async (req: RequestWithBody<AuthModel>, res: Response) => {
     try {
 
         const idUser = await authService.findUserInDataBase(req.body)

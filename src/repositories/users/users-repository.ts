@@ -19,13 +19,13 @@ export const usersRepository={
     },
 
     async findUserByConfirmationCode (code:string){
-        return usersCollection.findOne({
+        return await usersCollection.findOne({
             "emailConfirmation.confirmationCode":code
         })
     },
 
     async findUserByEmail (email:string){
-        return usersCollection.findOne({email})
+        return await usersCollection.findOne({email})
     },
 
     async updateFlagIsConfirmedForUser(code:string){
