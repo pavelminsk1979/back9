@@ -93,7 +93,7 @@ authRoute.get('/me', authTokenMiddleware, async (req: any, res: Response) => {
 })
 
 
-authRoute.post('/registration', postValidationForRegistration(), errorValidationBlogs, async (req: RequestWithBody<AuthRegistrationModel>, res: Response) => {
+authRoute.post('/registration',visitLimitMiddleware, postValidationForRegistration(), errorValidationBlogs, async (req: RequestWithBody<AuthRegistrationModel>, res: Response) => {
     try {
         await authService.registerUser(req.body.login,req.body.email,req.body.password)
 
@@ -108,7 +108,7 @@ authRoute.post('/registration', postValidationForRegistration(), errorValidation
 
 
 
-authRoute.post('/registration-confirmation', codeConfirmationValidation,errorValidationBlogs,async (req: RequestWithBody<AuthCodeConfirmationModel>, res: Response) => {
+authRoute.post('/registration-confirmation',visitLimitMiddleware, codeConfirmationValidation,errorValidationBlogs,async (req: RequestWithBody<AuthCodeConfirmationModel>, res: Response) => {
     try {
         await authService.updateConfirmationCode(req.body.code)
 
@@ -122,7 +122,7 @@ authRoute.post('/registration-confirmation', codeConfirmationValidation,errorVal
 
 
 
-authRoute.post('/registration-email-resending',emailValidationUsers,isConfirmedFlagValidation,errorValidationBlogs,async (req: RequestWithBody<AuthEmailModel>, res: Response) => {
+authRoute.post('/registration-email-resending',visitLimitMiddleware,emailValidationUsers,isConfirmedFlagValidation,errorValidationBlogs,async (req: RequestWithBody<AuthEmailModel>, res: Response) => {
     try {
         await authService.updateCodeConfirmationAndExpirationDate(req.body.email)
 
