@@ -8,7 +8,9 @@ export const usersDevicesQueryRepository={
 
         const devices= await usersDevicesCollection.find({userId})
 
-        return devices.map(deviceMaper)
+        const arrayDevices = await devices.toArray()
+debugger
+        return arrayDevices.map(deviceMaper)
     }
 
 }
