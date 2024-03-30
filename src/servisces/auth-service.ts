@@ -92,26 +92,6 @@ export const authService = {
         if (!user) return false
 
         return user
-    },
-
-
-    async checkRefreshToken(token: string) {
-
-        const userId = await tokenJwtServise.getUserIdByRefreshToken(token)
-
-        if (!userId) return false
-
-        const user: any = await usersRepository.findUserWithAllPropetiesById(userId)
-
-        if (!user) return false
-
-        const isExistRefreshTokenInBlackList = user.blackListRefreshToken.includes(token)
-
-        if (isExistRefreshTokenInBlackList) return false
-
-        const result = await usersRepository.updateBlackListRefreshTokenForUser(user.email, token)
-
-        return userId
     }
 
 

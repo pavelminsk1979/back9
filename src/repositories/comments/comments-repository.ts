@@ -26,7 +26,6 @@ export const commentsRepository = {
         })
 
         return !!result.matchedCount
-
     }
 
 }

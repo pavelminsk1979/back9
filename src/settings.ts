@@ -16,6 +16,7 @@ import {usersRoute} from "./routes/users-route";
 import {authRoute} from "./routes/auth-route";
 import {commentsRoute} from "./routes/comments-route";
 import cookieParser from "cookie-parser";
+import {securityDevicesRoute} from "./routes/securityDevices-route";
 
 
 export const app = express()
@@ -31,6 +32,7 @@ app.use('/posts', postsRoute)
 app.use('/users', usersRoute)
 app.use('/auth', authRoute)
 app.use('/comments',commentsRoute)
+app.use('/security',securityDevicesRoute)
 
 
 app.delete('/testing/all-data', async (req: Request, res: Response) => {

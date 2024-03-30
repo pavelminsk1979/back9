@@ -141,6 +141,18 @@ let jwtTokenFIRST:string=''
 
 
 
+    it("get devides one user",async ()=>{
+        const res =await req
+            .get('/security/devices')
+            .set("cookies", `refreshToken=${refreshTokenFIRST}`)
+
+            .expect(STATUS_CODE.SUCCESS_200)
+        console.log(res.body)
+
+    })
+
+
+
 /*    it("should return two token (accessToken and refreshToken",async ()=>{
         const res =await req
             .post('/auth/refresh-token')

@@ -6,7 +6,6 @@ import {loginAndEmailValidationAuth} from "../middlewares/authMiddleware/loginAn
 import {passwordValidationAuth} from "../middlewares/authMiddleware/passwordValidationAuth";
 import {AuthCodeConfirmationModel, AuthEmailModel, AuthModel, AuthRegistrationModel} from "../allTypes/authTypes";
 import {authService} from "../servisces/auth-service";
-import {tokenJwtServise} from "../servisces/token-jwt-service";
 import {authTokenMiddleware} from "../middlewares/authMiddleware/authTokenMiddleware";
 import {userMaperForMeRequest} from "../mapers/userMaperForMeRequest";
 import {loginValidationUsers} from "../middlewares/usersMiddlewares/loginValidationUsers";
@@ -19,6 +18,8 @@ import {isExistEmailValidation} from "../middlewares/authMiddleware/isExistEmail
 import {visitLimitMiddleware} from "../middlewares/commonMiddlewares/visitLimitMiddleware";
 import {loginService} from "../servisces/login-service";
 import {AccessAndRefreshToken} from "../allTypes/usersDevicesTypes";
+import {updateRefreshTokenService} from "../servisces/update-refreshToken-service";
+import {logoutService} from "../servisces/logout-service";
 
 
 export const authRoute = Router({})
@@ -55,22 +56,14 @@ authRoute.post('/refresh-token',async (req: any, res: Response) => {
     try{
         const refreshToken = req.cookies.refreshToken
 
-        const userId =  await authService.checkRefreshToken(refreshToken)
+        const result = await updateRefreshTokenService.updateRefreshToken(refreshToken)
 
-        if (userId) {
-            const accessToken = await tokenJwtServise.createAccessTokenJwt(userId)
-            const answer = {"accessToken": accessToken}
-
-            const refreshToken=await tokenJwtServise.createRefreshTokenJwt(userId)
-
-            res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true,})
-            res.status(STATUS_CODE.SUCCESS_200).send(answer)
-
+        if (result) {
+            res.cookie('refreshToken', result.refreshToken, {httpOnly: true, secure: true,})
+            res.status(STATUS_CODE.SUCCESS_200).send({"accessToken": result.accessToken})
         } else {
             res.sendStatus(STATUS_CODE.UNAUTHORIZED_401)
         }
-
-
     } catch (error) {
         console.log('auth-routes.ts /refresh-token' + error)
         res.sendStatus(STATUS_CODE.SERVER_ERROR_500)
@@ -140,9 +133,10 @@ authRoute.post('/logout',async (req: any, res: any) => {
     try{
         const refreshToken = req.cookies.refreshToken
 
-        const userId =  await authService.checkRefreshToken(refreshToken)
+        const isLogout = await  logoutService.logout(refreshToken)
 
-        if (userId) {
+
+        if (isLogout) {
             res.sendStatus(STATUS_CODE.NO_CONTENT_204)
 
         } else {

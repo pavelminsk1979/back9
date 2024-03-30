@@ -4,7 +4,7 @@ import {authService} from "./auth-service";
 import {tokenJwtServise} from "./token-jwt-service";
 import {v4 as randomDeviceId} from "uuid";
 import {AccessAndRefreshToken, UsersDevices} from "../allTypes/usersDevicesTypes";
-import {usersDevicesRepository} from "../repositories/usersDevices-repository";
+import {usersDevicesRepository} from "../repositories/usersDevices/usersDevices-repository";
 
 
 export const loginService = {
