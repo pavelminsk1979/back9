@@ -14,9 +14,9 @@ export const securityDevicesService={
         if(!result) return null
 
         const device:WithId<UsersDevices>|null = await usersDevicesRepository.findDeviceByIdAndDate(result)
-
+        debugger
         if(!device) return null
-
+        debugger
         const devicesOneUser = await usersDevicesQueryRepository.getDevices(device.userId)
 
 

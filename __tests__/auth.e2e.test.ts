@@ -34,7 +34,7 @@ describe('/auth',()=>{
 
 
 
-
+let ref = 2
 let refreshTokenFIRST:string;
 let jwtTokenFIRST:string=''
     it("input correct login and password and sign in (ok) and create FIRST  devace",async ()=>{
@@ -50,7 +50,7 @@ let jwtTokenFIRST:string=''
 
         const allCookies = res.headers['set-cookie'];
         refreshTokenFIRST = allCookies[0].split(';')[0].split('=')[1];
-        //console.log(refreshToken);
+        console.log('refreshTokenFIRST'+refreshTokenFIRST);
 
         jwtTokenFIRST=res.body.accessToken
 
@@ -111,7 +111,7 @@ let jwtTokenFIRST:string=''
 
         const allCookies = res.headers['set-cookie'];
         refreshTokenSECOND = allCookies[0].split(';')[0].split('=')[1];
-        //console.log(refreshToken);
+        console.log(refreshTokenSECOND);
 
         jwtTokenSECOND=res.body.accessToken
 
@@ -144,7 +144,7 @@ let jwtTokenFIRST:string=''
     it("get devides one user",async ()=>{
         const res =await req
             .get('/security/devices')
-            .set("cookies", `refreshToken=${refreshTokenFIRST}`)
+            .set('Cookie', `refreshToken=${refreshTokenFIRST}`)
 
             .expect(STATUS_CODE.SUCCESS_200)
         console.log(res.body)
@@ -156,7 +156,7 @@ let jwtTokenFIRST:string=''
 /*    it("should return two token (accessToken and refreshToken",async ()=>{
         const res =await req
             .post('/auth/refresh-token')
-            .set('Cookie', `refreshToken=${refreshToken}`)
+            .set('Cookie', `refreshToken=${refreshTokenFIRST}`)
             .expect(STATUS_CODE.SUCCESS_200)
         console.log(res.body)
         console.log(res.headers['set-cookie']);

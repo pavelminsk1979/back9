@@ -37,7 +37,6 @@ authRoute.post('/login',visitLimitMiddleware, postValidationAuth(), errorValidat
 
         const  result:AccessAndRefreshToken|null =await loginService.loginUser(req)
 
-
         if (result) {
             res.cookie('refreshToken', result.refreshToken, {httpOnly: true, secure: true,})
             res.status(STATUS_CODE.SUCCESS_200).send({"accessToken": result.accessToken})

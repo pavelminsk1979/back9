@@ -8,10 +8,10 @@ export const securityDevicesRoute = Router({})
 
 securityDevicesRoute.get('/devices', async (req: any, res: Response) => {
     try {
-        debugger
+
         const refreshToken = req.cookies.refreshToken
 
-        const devices = securityDevicesService.getActiveDevices(refreshToken)
+        const devices = await securityDevicesService.getActiveDevices(refreshToken)
 
         if (devices) {
             debugger
