@@ -12,10 +12,22 @@ export const tokenJwtServise = {
     },
 
 
-    async createRefreshTokenJwt(userId: string){
-        const refreshToken=await  jwt.sign({userId: userId}, settings.JWT_SECRET_RefreshTOKEN, {expiresIn: settings.TIME_LIFE_RefreshTOKEN})
+    async createRefreshTokenJwt(deviceId: string){
 
-        return refreshToken
+        const issuedAtRefreshToken = new Date();
+        // date create refreshToken
+
+        const timeLifeRefreshToken = settings.TIME_LIFE_RefreshTOKEN //'20s' string
+
+        const numberTimeLifeRefreshToken: number = parseInt(settings.TIME_LIFE_RefreshTOKEN, 10 );
+
+        const expirationRefreshToken = new Date((issuedAtRefreshToken.getTime() + numberTimeLifeRefreshToken * 1000));
+
+
+
+        const refreshToken=await  jwt.sign({deviceId,issuedAtRefreshToken}, settings.JWT_SECRET_RefreshTOKEN, {expiresIn:timeLifeRefreshToken })
+
+        return {refreshToken,issuedAtRefreshToken,expirationRefreshToken}
     },
 
     async getUserIdByToken(token: string) {

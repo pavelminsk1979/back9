@@ -17,6 +17,8 @@ import {isConfirmedFlagValidation} from "../middlewares/authMiddleware/isConfirm
 import {isExistLoginValidator} from "../middlewares/authMiddleware/isExistLoginValidator";
 import {isExistEmailValidation} from "../middlewares/authMiddleware/isExistEmailValidation";
 import {visitLimitMiddleware} from "../middlewares/commonMiddlewares/visitLimitMiddleware";
+import {loginService} from "../servisces/login-service";
+import {AccessAndRefreshToken} from "../allTypes/usersDevicesTypes";
 
 
 export const authRoute = Router({})
@@ -26,21 +28,18 @@ const postValidationAuth = () => [loginAndEmailValidationAuth, passwordValidatio
 const postValidationForRegistration = () => [loginValidationUsers, passwordValidationUsers, emailValidationUsers,isExistLoginValidator,isExistEmailValidation]
 
 
+
+
 authRoute.post('/login',visitLimitMiddleware, postValidationAuth(), errorValidationBlogs, async (req: RequestWithBody<AuthModel>, res: Response) => {
+
     try {
 
-        const idUser = await authService.findUserInDataBase(req.body)
+        const  result:AccessAndRefreshToken|null =await loginService.loginUser(req)
 
-        if (idUser) {
 
-            const accessToken = await tokenJwtServise.createAccessTokenJwt(idUser)
-            const answer = {"accessToken": accessToken}
-
-            const refreshToken=await tokenJwtServise.createRefreshTokenJwt(idUser)
-
-            res.cookie('refreshToken', refreshToken, {httpOnly: true, secure: true,})
-            res.status(STATUS_CODE.SUCCESS_200).send(answer)
-
+        if (result) {
+            res.cookie('refreshToken', result.refreshToken, {httpOnly: true, secure: true,})
+            res.status(STATUS_CODE.SUCCESS_200).send({"accessToken": result.accessToken})
         } else {
             res.sendStatus(STATUS_CODE.UNAUTHORIZED_401)
         }

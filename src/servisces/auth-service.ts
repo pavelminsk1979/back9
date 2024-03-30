@@ -112,7 +112,7 @@ export const authService = {
         const result = await usersRepository.updateBlackListRefreshTokenForUser(user.email, token)
 
         return userId
-    },
+    }
 
 
 }
