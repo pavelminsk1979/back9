@@ -13,7 +13,6 @@ export const usersDevicesRepository = {
 
     async findDeviceByIdAndDate(result: ContentRefreshToken):Promise<WithId<UsersDevices>|null> {
 
-
         const entity = await usersDevicesCollection.findOne({
             deviceId:result.deviceId,
             issuedAt:new Date(result.issuedAtRefreshToken)

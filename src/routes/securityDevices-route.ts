@@ -14,7 +14,6 @@ securityDevicesRoute.get('/devices', async (req: any, res: Response) => {
         const devices = await securityDevicesService.getActiveDevices(refreshToken)
 
         if (devices) {
-            debugger
 
             res.status(STATUS_CODE.SUCCESS_200).send(devices)
 
