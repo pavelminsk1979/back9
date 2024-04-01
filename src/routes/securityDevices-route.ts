@@ -1,4 +1,4 @@
-import {Response, Router} from "express";
+import {Response, Router, Request} from "express";
 import {STATUS_CODE} from "../common/constant-status-code";
 import {securityDevicesService} from "../servisces/securityDevices-service";
 
@@ -6,7 +6,7 @@ import {securityDevicesService} from "../servisces/securityDevices-service";
 
 export const securityDevicesRoute = Router({})
 
-securityDevicesRoute.get('/devices', async (req: any, res: Response) => {
+securityDevicesRoute.get('/devices', async (req: Request, res: Response) => {
     try {
 
         const refreshToken = req.cookies.refreshToken
@@ -24,6 +24,31 @@ securityDevicesRoute.get('/devices', async (req: any, res: Response) => {
     }catch (error){
         console.log('securityDevices-route.ts /devices' + error)
         res.sendStatus(STATUS_CODE.SERVER_ERROR_500)
+    }
+
+})
+
+
+
+
+securityDevicesRoute.delete('/devices', async (req: Request, res: Response) => {
+    try {
+
+        const refreshToken = req.cookies.refreshToken
+
+        const isDelete = await securityDevicesService.deleteNotActiveDevices(refreshToken)
+
+        if (isDelete) {
+
+            return res.sendStatus(STATUS_CODE.NO_CONTENT_204)
+
+        } else {
+            return res.sendStatus(STATUS_CODE.UNAUTHORIZED_401)
+        }
+
+    }catch (error){
+        console.log('securityDevices-route.ts delete /devices' + error)
+       return  res.sendStatus(STATUS_CODE.SERVER_ERROR_500)
     }
 
 })

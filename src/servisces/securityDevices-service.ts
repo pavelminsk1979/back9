@@ -21,7 +21,23 @@ export const securityDevicesService={
 
 
         return devicesOneUser
+    },
 
-    }
+
+    async deleteNotActiveDevices(refreshToken:string){
+
+        const result :ContentRefreshToken|null =  await tokenJwtServise.getDataFromRefreshToken(refreshToken)
+
+        if(!result) return null
+
+        const device:WithId<UsersDevices>|null = await usersDevicesRepository.findDeviceByIdAndDate(result)
+
+        if(!device) return null
+        debugger
+         await usersDevicesQueryRepository.deleteDevicesExeptCurrentDevice(device.userId,device.deviceId)
+
+
+        return true
+    },
 
 }
