@@ -153,6 +153,26 @@ let jwtTokenFIRST:string=''
 
 
 
+    it("logout",async ()=>{
+        const res =await req
+            .post('/auth/logout')
+            .set('Cookie', `refreshToken=${refreshTokenFIRST}`)
+
+            .expect(STATUS_CODE.NO_CONTENT_204)
+
+    })
+
+/*    it("logout befor 20sec",async ()=>{
+        const res =await req
+            .post('/auth/logout')
+            .set('Cookie', `refreshToken=${refreshTokenFIRST}`)
+
+            .expect(STATUS_CODE.UNAUTHORIZED_401)
+
+    })*/
+
+
+
 /*    it("should return two token (accessToken and refreshToken",async ()=>{
         const res =await req
             .post('/auth/refresh-token')

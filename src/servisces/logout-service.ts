@@ -1,6 +1,5 @@
-import {ContentRefreshToken, UsersDevices} from "../allTypes/usersDevicesTypes";
+import {ContentRefreshToken} from "../allTypes/usersDevicesTypes";
 import {tokenJwtServise} from "./token-jwt-service";
-import {WithId} from "mongodb";
 import {usersDevicesRepository} from "../repositories/usersDevices/usersDevices-repository";
 
 
