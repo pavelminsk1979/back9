@@ -6,5 +6,5 @@ export const settings = {
 
     JWT_SECRET_RefreshTOKEN: process.env.JWT_RefreshTOKEN_SECRET || 'refreshToken' ,
 
-    TIME_LIFE_RefreshTOKEN: '20s',
+    TIME_LIFE_RefreshTOKEN: '19s',
 }
