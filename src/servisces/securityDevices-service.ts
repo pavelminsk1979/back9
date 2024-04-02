@@ -55,11 +55,13 @@ export const securityDevicesService = {
             code: ResultCode.Incorrect
         }
 
-
-
         if (deviceId !== result.deviceId) return {
-            code: ResultCode.NotFound
+            code: ResultCode.Success
         }
+
+     /*   if (deviceId !== result.deviceId) return {
+            code: ResultCode.NotFound
+        }*/
 
         const isDelete: boolean = await usersDevicesRepository.deleteDeviceById(deviceId)
 
