@@ -62,13 +62,8 @@ export const usersDevicesRepository = {
     },
 
     async deleteDeviceById(deviceId:string) {
-        const res = await usersDevicesCollection.deleteOne({deviceId})
-        if (res.deletedCount > 0) {
+         await usersDevicesCollection.deleteOne({deviceId})
 
-            return true
-        } else {
-            return false
-        }
     },
 
 
