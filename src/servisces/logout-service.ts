@@ -11,7 +11,7 @@ export const logoutService = {
 
         if(!result) return null
 
-         const isDelete = await usersDevicesRepository.deleteDevice(result.deviceId)
+         const isDelete = await usersDevicesRepository.deleteDevice(result.deviceId,result.issuedAtRefreshToken)
 
         if(isDelete){return true} else {return false}
 
