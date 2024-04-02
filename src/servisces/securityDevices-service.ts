@@ -43,14 +43,22 @@ export const securityDevicesService = {
 
     async deleteDeviceById(deviceId: string, refreshToken: string) {
 
+        const isExistDeviceInCollection = await usersDevicesRepository.findDeviceById(deviceId)
+
+        if (!isExistDeviceInCollection) return {
+            code: ResultCode.Failure
+        }
+
         const result: ContentRefreshToken | null = await tokenJwtServise.getDataFromRefreshToken(refreshToken)
 
         if (!result) return {
             code: ResultCode.Incorrect
         }
 
+
+
         if (deviceId !== result.deviceId) return {
-            code: ResultCode.Failure
+            code: ResultCode.NotFound
         }
 
         const isDelete: boolean = await usersDevicesRepository.deleteDevice(deviceId)

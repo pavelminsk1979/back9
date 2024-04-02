@@ -20,6 +20,12 @@ export const usersDevicesRepository = {
         return entity
     },
 
+    async findDeviceById(deviceId: string): Promise<WithId<UsersDevices> | null> {
+
+        const entity = await usersDevicesCollection.findOne({deviceId})
+        return entity
+    },
+
 
     async updateDevice(id: string, issuedAtRefreshToken: Date, expirationRefreshToken: Date) {
 
