@@ -59,6 +59,17 @@ export const usersDevicesRepository = {
         } else {
             return false
         }
-    }
+    },
+
+    async deleteDeviceById(deviceId:string) {
+        const res = await usersDevicesCollection.deleteOne({deviceId})
+        if (res.deletedCount > 0) {
+
+            return true
+        } else {
+            return false
+        }
+    },
+
 
 }

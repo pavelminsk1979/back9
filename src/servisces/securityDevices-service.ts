@@ -61,7 +61,7 @@ export const securityDevicesService = {
             code: ResultCode.NotFound
         }*/
 
-        const isDelete: boolean = await usersDevicesRepository.deleteDevice(deviceId,result.issuedAtRefreshToken)
+        const isDelete: boolean = await usersDevicesRepository.deleteDeviceById(deviceId)
 
         if (isDelete) return {code: ResultCode.Success}
 
