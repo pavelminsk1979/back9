@@ -35,7 +35,9 @@ describe('securityDevices', () => {
     })
 
 
-    let refreshTokenFIRST: string;
+
+
+    let refreshTokenFIRSTLaptop: string;
 
     it("create device first", async () => {
         const res = await req
@@ -49,13 +51,15 @@ describe('securityDevices', () => {
 
 
         const allCookies = res.headers['set-cookie'];
-        refreshTokenFIRST = allCookies[0].split(';')[0].split('=')[1];
+        refreshTokenFIRSTLaptop = allCookies[0].split(';')[0].split('=')[1];
         //console.log('refreshTokenFIRST'+refreshTokenFIRST);
 
     })
 
 
-    let refreshTokenSecond: string;
+
+
+    let refreshTokenSecondLaptop: string;
 
     it("create device second", async () => {
         const res = await req
@@ -69,104 +73,109 @@ describe('securityDevices', () => {
 
 
         const allCookies = res.headers['set-cookie'];
-        refreshTokenSecond = allCookies[0].split(';')[0].split('=')[1];
-
-
+        refreshTokenSecondLaptop = allCookies[0].split(';')[0].split('=')[1];
     })
 
 
-    let refreshTokenThird: string;
-
-    it("create device third", async () => {
-        const res = await req
-            .post('/auth/login')
-            .send({
-                loginOrEmail: loginNewUser,
-                password: passwordNewUser
-            })
-            .set('user-agent', 'ThirdLaptop')
-            .expect(STATUS_CODE.SUCCESS_200)
 
 
-        const allCookies = res.headers['set-cookie'];
-        refreshTokenThird = allCookies[0].split(';')[0].split('=')[1];
 
 
-    })
 
+
+
+
+
+
+    let idDeviceFIRSTLaptop:string
 
     it("get devices one user", async () => {
         const res = await req
             .get('/security/devices')
-            .set('Cookie', `refreshToken=${refreshTokenFIRST}`)
+            .set('Cookie', `refreshToken=${refreshTokenFIRSTLaptop}`)
 
             .expect(STATUS_CODE.SUCCESS_200)
+
+        idDeviceFIRSTLaptop=res.body[0].deviceId
+
         //console.log(res.body)
-    })
-
-
-    it("delete all devices exept current device", async () => {
-         await req
-            .delete('/security/devices')
-            .set('Cookie', `refreshToken=${refreshTokenThird}`)
-
-            .expect(STATUS_CODE.NO_CONTENT_204)
+        console.log('idDeviceFIRSTLaptop'+' '+idDeviceFIRSTLaptop)
 
     })
 
 
-    let refreshTokenFourth: string;
 
-    it("create device fourth", async () => {
+
+
+
+
+
+    const loginUser = '55555555'
+    const passwordUser = '555555YUI'
+    const emailUser = 'potapov@mail.ru'
+
+
+    it('POST create Users', async () => {
+        const res = await req
+            .post('/users')
+            .set('Authorization', `Basic ${loginPasswordBasic64}`)
+            .send({
+                login: loginUser,
+                password: passwordUser,
+                email: emailUser
+            })
+            .expect(STATUS_CODE.CREATED_201)
+
+    })
+
+
+    let refreshTokenPhone: string;
+
+    it("create device FIRSTPhone", async () => {
         const res = await req
             .post('/auth/login')
             .send({
-                loginOrEmail: loginNewUser,
-                password: passwordNewUser
+                loginOrEmail: loginUser,
+                password: passwordUser
             })
-            .set('user-agent', 'FourthLaptop')
+            .set('user-agent', 'Phone')
             .expect(STATUS_CODE.SUCCESS_200)
 
 
         const allCookies = res.headers['set-cookie'];
-        refreshTokenFourth = allCookies[0].split(';')[0].split('=')[1];
+        refreshTokenPhone = allCookies[0].split(';')[0].split('=')[1];
+        //console.log('refreshTokenFIRST'+refreshTokenFIRST);
 
     })
 
-
-    let idFourthDevice:string
+    let idDevicePhone:string
 
     it("get devices one user", async () => {
         const res = await req
             .get('/security/devices')
-            .set('Cookie', `refreshToken=${refreshTokenFourth}`)
+            .set('Cookie', `refreshToken=${refreshTokenPhone}`)
 
             .expect(STATUS_CODE.SUCCESS_200)
 
-        idFourthDevice=res.body[1].deviceId
+        idDevicePhone=res.body[0].deviceId
 
         //console.log(res.body)
-        //console.log(idFourthDevice)
+        console.log('idDevicePhone'+' '+idDevicePhone)
 
     })
 
 
-    it("delete one device by correct id", async () => {
+
+
+
+
+    it("correct id but not my session", async () => {
         await req
-            .delete('/security/devices/'+idFourthDevice)
-            .set('Cookie', `refreshToken=${refreshTokenFourth}`)
+            .delete('/security/devices/'+idDeviceFIRSTLaptop)
+            .set('Cookie', `refreshToken=${refreshTokenPhone}`)
 
-            .expect(STATUS_CODE.NO_CONTENT_204)
+            .expect(STATUS_CODE.FORBIDDEN_403)
 
-    })
-
-
-    it("delete one device by incorrect id", async () => {
-        await req
-            .delete('/security/devices/63189b06003380064c4193be')
-            .set('Cookie', `refreshToken=${refreshTokenFourth}`)
-
-            .expect(STATUS_CODE.NOT_FOUND_404)
     })
 
 
