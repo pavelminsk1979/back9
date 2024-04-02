@@ -11,9 +11,11 @@ export const logoutService = {
 
         if(!result) return null
 
-         await usersDevicesRepository.deleteDevice(result.deviceId)
+         const isDelete = await usersDevicesRepository.deleteDevice(result.deviceId)
 
-        return true
+        if(isDelete){return true} else {return false}
+
+
 
     }
 }
