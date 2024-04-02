@@ -3,19 +3,20 @@ import {tokenJwtServise} from "./token-jwt-service";
 import {WithId} from "mongodb";
 import {usersDevicesRepository} from "../repositories/usersDevices/usersDevices-repository";
 import {usersDevicesQueryRepository} from "../repositories/usersDevices/usersDevices-query-repository";
+import {ResultCode} from "../common/object-result";
 
 
-export const securityDevicesService={
+export const securityDevicesService = {
 
-    async getActiveDevices(refreshToken:string){
+    async getActiveDevices(refreshToken: string) {
 
-        const result :ContentRefreshToken|null =  await tokenJwtServise.getDataFromRefreshToken(refreshToken)
+        const result: ContentRefreshToken | null = await tokenJwtServise.getDataFromRefreshToken(refreshToken)
 
-        if(!result) return null
+        if (!result) return null
 
-        const device:WithId<UsersDevices>|null = await usersDevicesRepository.findDeviceByIdAndDate(result)
+        const device: WithId<UsersDevices> | null = await usersDevicesRepository.findDeviceByIdAndDate(result)
 
-        if(!device) return null
+        if (!device) return null
 
         const devicesOneUser = await usersDevicesQueryRepository.getDevices(device.userId)
 
@@ -24,20 +25,41 @@ export const securityDevicesService={
     },
 
 
-    async deleteNotActiveDevices(refreshToken:string){
+    async deleteNotActiveDevices(refreshToken: string) {
 
-        const result :ContentRefreshToken|null =  await tokenJwtServise.getDataFromRefreshToken(refreshToken)
+        const result: ContentRefreshToken | null = await tokenJwtServise.getDataFromRefreshToken(refreshToken)
 
-        if(!result) return null
+        if (!result) return null
 
-        const device:WithId<UsersDevices>|null = await usersDevicesRepository.findDeviceByIdAndDate(result)
+        const device: WithId<UsersDevices> | null = await usersDevicesRepository.findDeviceByIdAndDate(result)
 
-        if(!device) return null
-        debugger
-         await usersDevicesQueryRepository.deleteDevicesExeptCurrentDevice(device.userId,device.deviceId)
+        if (!device) return null
+
+        await usersDevicesRepository.deleteDevicesExeptCurrentDevice(device.userId, device.deviceId)
 
 
         return true
     },
+
+    async deleteDeviceById(deviceId: string, refreshToken: string) {
+
+        const result: ContentRefreshToken | null = await tokenJwtServise.getDataFromRefreshToken(refreshToken)
+
+        if (!result) return {
+            code: ResultCode.Incorrect
+        }
+
+        if (deviceId !== result.deviceId) return {
+            code: ResultCode.Failure
+        }
+
+        const isDelete: boolean = await usersDevicesRepository.deleteDevice(deviceId)
+
+        if (isDelete) return {code: ResultCode.Success}
+
+        return {code: ResultCode.NotFound}
+
+
+    }
 
 }

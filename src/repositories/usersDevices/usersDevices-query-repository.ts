@@ -11,16 +11,7 @@ export const usersDevicesQueryRepository = {
         const arrayDevices = await devices.toArray()
 
         return arrayDevices.map(deviceMaper)
-    },
-
-    async deleteDevicesExeptCurrentDevice(userId: string, deviceId: string) {
-        debugger
-        await usersDevicesCollection.deleteMany({
-            userId: userId,
-            deviceId: {$ne: deviceId}
-        });
-        debugger
-        return true
     }
+
 
 }

@@ -37,7 +37,7 @@ describe('securityDevices', () => {
 
     let refreshTokenFIRST: string;
 
-    it("create entity first", async () => {
+    it("create device first", async () => {
         const res = await req
             .post('/auth/login')
             .send({
@@ -57,7 +57,7 @@ describe('securityDevices', () => {
 
     let refreshTokenSecond: string;
 
-    it("create entity second", async () => {
+    it("create device second", async () => {
         const res = await req
             .post('/auth/login')
             .send({
@@ -77,7 +77,7 @@ describe('securityDevices', () => {
 
     let refreshTokenThird: string;
 
-    it("create entity third", async () => {
+    it("create device third", async () => {
         const res = await req
             .post('/auth/login')
             .send({
@@ -102,7 +102,6 @@ describe('securityDevices', () => {
 
             .expect(STATUS_CODE.SUCCESS_200)
         //console.log(res.body)
-
     })
 
 
@@ -118,7 +117,7 @@ describe('securityDevices', () => {
 
     let refreshTokenFourth: string;
 
-    it("create entity fourth", async () => {
+    it("create device fourth", async () => {
         const res = await req
             .post('/auth/login')
             .send({
@@ -131,6 +130,33 @@ describe('securityDevices', () => {
 
         const allCookies = res.headers['set-cookie'];
         refreshTokenFourth = allCookies[0].split(';')[0].split('=')[1];
+
+    })
+
+
+    let idFourthDevice:string
+
+    it("get devices one user", async () => {
+        const res = await req
+            .get('/security/devices')
+            .set('Cookie', `refreshToken=${refreshTokenFourth}`)
+
+            .expect(STATUS_CODE.SUCCESS_200)
+
+        idFourthDevice=res.body[1].deviceId
+
+        //console.log(res.body)
+        //console.log(idFourthDevice)
+
+    })
+
+
+    it("delete one device by correct id", async () => {
+        await req
+            .delete('/security/devices/'+idFourthDevice)
+            .set('Cookie', `refreshToken=${refreshTokenFourth}`)
+
+            .expect(STATUS_CODE.NO_CONTENT_204)
 
     })
 
