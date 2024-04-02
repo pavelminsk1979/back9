@@ -161,6 +161,16 @@ describe('securityDevices', () => {
     })
 
 
+    it("delete one device by incorrect id", async () => {
+        await req
+            .delete('/security/devices/63189b06003380064c4193be')
+            .set('Cookie', `refreshToken=${refreshTokenFourth}`)
+
+            .expect(STATUS_CODE.NOT_FOUND_404)
+
+    })
+
+
 
 
 })

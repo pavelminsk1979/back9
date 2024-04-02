@@ -68,13 +68,13 @@ securityDevicesRoute.delete('/devices/:deviceId', async (req: RequestWithParams<
         }
 
         if (resultObject.code === ResultCode.NotFound) {
-            return res.sendStatus(STATUS_CODE.NOT_FOUND_404)
+            return res.sendStatus(STATUS_CODE.FORBIDDEN_403)
         }
         if (resultObject.code === ResultCode.Incorrect) {
             return res.sendStatus(STATUS_CODE.UNAUTHORIZED_401)
         }
         if (resultObject.code === ResultCode.Failure) {
-            return res.sendStatus(STATUS_CODE.FORBIDDEN_403)
+            return res.sendStatus(STATUS_CODE.NOT_FOUND_404)
         }
         return
 
