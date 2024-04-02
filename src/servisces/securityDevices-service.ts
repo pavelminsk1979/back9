@@ -49,21 +49,30 @@ export const securityDevicesService = {
             code: ResultCode.Failure
         }
 
-        const result: ContentRefreshToken | null = await tokenJwtServise.getDataFromRefreshToken(refreshToken)
+        const dataFromRefreshToken: ContentRefreshToken | null = await tokenJwtServise.getDataFromRefreshToken(refreshToken)
 
-        if (!result) return {
+        if (!dataFromRefreshToken) return {
             code: ResultCode.Incorrect
         }
 
+        const dataSession = await usersDevicesRepository.findDeviceByIdAndDate(dataFromRefreshToken)
+
+        if (!dataSession) return {
+            code: ResultCode.Incorrect
+        }
+
+        const userId = dataSession.userId
+
+        const isDeleteSessionCorrectUser= await usersDevicesRepository.deleteDeviceCorrectUser(userId,deviceId)
 
 
-        if (deviceId !== result.deviceId) return {
+        if (!isDeleteSessionCorrectUser) return {
             code: ResultCode.NotFound
         }
 
-         await usersDevicesRepository.deleteDeviceById(deviceId)
+        /*await usersDevicesRepository.deleteDeviceById(deviceId)*/
 
-         return {code: ResultCode.Success}
+        return {code: ResultCode.Success}
 
     }
 

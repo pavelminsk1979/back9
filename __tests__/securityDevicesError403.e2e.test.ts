@@ -35,8 +35,6 @@ describe('securityDevices', () => {
     })
 
 
-
-
     let refreshTokenFIRSTLaptop: string;
 
     it("create device first", async () => {
@@ -57,8 +55,6 @@ describe('securityDevices', () => {
     })
 
 
-
-
     let refreshTokenSecondLaptop: string;
 
     it("create device second", async () => {
@@ -77,17 +73,7 @@ describe('securityDevices', () => {
     })
 
 
-
-
-
-
-
-
-
-
-
-
-    let idDeviceFIRSTLaptop:string
+    let idDeviceFIRSTLaptop: string
 
     it("get devices one user", async () => {
         const res = await req
@@ -96,18 +82,12 @@ describe('securityDevices', () => {
 
             .expect(STATUS_CODE.SUCCESS_200)
 
-        idDeviceFIRSTLaptop=res.body[0].deviceId
+        idDeviceFIRSTLaptop = res.body[0].deviceId
 
         //console.log(res.body)
-        console.log('idDeviceFIRSTLaptop'+' '+idDeviceFIRSTLaptop)
+        console.log('idDeviceFIRSTLaptop' + ' ' + idDeviceFIRSTLaptop)
 
     })
-
-
-
-
-
-
 
 
     const loginUser = '55555555'
@@ -148,7 +128,7 @@ describe('securityDevices', () => {
 
     })
 
-    let idDevicePhone:string
+    let idDevicePhone: string
 
     it("get devices one user", async () => {
         const res = await req
@@ -157,26 +137,42 @@ describe('securityDevices', () => {
 
             .expect(STATUS_CODE.SUCCESS_200)
 
-        idDevicePhone=res.body[0].deviceId
+        idDevicePhone = res.body[0].deviceId
 
         //console.log(res.body)
-        console.log('idDevicePhone'+' '+idDevicePhone)
+        console.log('idDevicePhone' + ' ' + idDevicePhone)
 
     })
-
-
-
-
-
+//для проверки один из трех надо раскоментировать
 
     it("correct id but not my session", async () => {
         await req
-            .delete('/security/devices/'+idDeviceFIRSTLaptop)
+            .delete('/security/devices/' + idDeviceFIRSTLaptop)
             .set('Cookie', `refreshToken=${refreshTokenPhone}`)
 
             .expect(STATUS_CODE.FORBIDDEN_403)
 
     })
+
+
+ /*      it("correct id but not my session", async () => {
+           await req
+               .delete('/security/devices/'+idDeviceFIRSTLaptop)
+               .set('Cookie', `refreshToken=${refreshTokenFIRSTLaptop}`)
+
+               .expect(STATUS_CODE.NO_CONTENT_204)
+       })
+*/
+
+/*
+    it("correct id but not my session", async () => {
+        await req
+            .delete('/security/devices/' + idDeviceFIRSTLaptop)
+            .set('Cookie', `refreshToken=${refreshTokenSecondLaptop}`)
+
+            .expect(STATUS_CODE.NO_CONTENT_204)
+    })
+*/
 
 
 })

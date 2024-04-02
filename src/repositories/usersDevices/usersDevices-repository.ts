@@ -48,7 +48,7 @@ export const usersDevicesRepository = {
     },
 
 
-    async deleteDevice(deviceId:string,issuedAt:Date) {
+    async deleteDevice(deviceId: string, issuedAt: Date) {
         const res = await usersDevicesCollection.deleteOne({
             deviceId,
             issuedAt: new Date(issuedAt)
@@ -61,9 +61,18 @@ export const usersDevicesRepository = {
         }
     },
 
-    async deleteDeviceById(deviceId:string) {
-         await usersDevicesCollection.deleteOne({deviceId})
 
+    async deleteDeviceCorrectUser(userId: string, deviceId: string) {
+        const res = await usersDevicesCollection.deleteOne({
+            userId,
+            deviceId
+        })
+        if (res.deletedCount > 0) {
+
+            return true
+        } else {
+            return false
+        }
     },
 
 
