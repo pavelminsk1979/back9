@@ -70,7 +70,7 @@ export const securityDevicesService = {
             code: ResultCode.NotFound
         }
 
-        /*await usersDevicesRepository.deleteDeviceById(deviceId)*/
+
 
         return {code: ResultCode.Success}
 

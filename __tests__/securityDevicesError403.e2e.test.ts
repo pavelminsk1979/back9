@@ -143,7 +143,7 @@ describe('securityDevices', () => {
         console.log('idDevicePhone' + ' ' + idDevicePhone)
 
     })
-//для проверки один из трех надо раскоментировать
+//для проверки один из трех надо раскоментировать ИХ НЕ НАДО УДАЛЯТЬ
 
     it("correct id but not my session", async () => {
         await req

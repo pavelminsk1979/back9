@@ -25,7 +25,7 @@ const registerUserMethod = authService.registerUser;
 
         const result = await registerUserMethod(login,email,password)
 
-        console.log(result)
+        //console.log(result)
 
         expect(result).toEqual({
             login,
